@@ -1,0 +1,58 @@
+body{
+    min-height: 100vh;
+    background-image: url('../res/images/background.jpg');
+    background-size: cover;
+}
+
+.box{
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 2rem 0.5rem black;
+    width: 25rem;
+    max-width: 95%;
+    margin-top: 5rem;
+}
+.title-card .logo{
+    height: 10rem;
+    position: relative;
+    top: -7rem;
+    margin-bottom: -5rem;
+}
+.title-card h1{
+    margin-bottom: 2rem;
+}
+
+
+.row{
+    width: 100%;
+    justify-content: space-between;
+    margin: 1rem 0;
+    font-size: 1.25rem;
+}
+input{
+    padding: 0.5rem;
+    border-width: 0 0 3px 0;
+    border-color: var(--black);
+    outline: none;
+    width: 100%;
+    margin-left: 1rem;
+    font-size: 1.25rem;
+}
+#play{
+    padding: 1rem;
+    font-size: 1.5rem;
+    width: 100%;
+    background-color: var(--inima);
+    border-radius: 1rem;
+    margin: 1rem 0;
+    cursor: pointer;
+    font-weight: 900;
+    outline: none;
+    border: none;
+    color: var(--white);
+}
+.col{
+    padding: 2rem;
+    margin: 1rem 0;
+}

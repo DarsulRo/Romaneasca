@@ -1,0 +1,82 @@
+:root{
+    --white: rgb(245, 245, 245);
+    --black: rgb(40, 40, 40);
+    --yellow: rgb(243, 218, 76);
+
+    --ghinda: rgb(255, 208, 0);
+    --inima: rgb(212, 27, 27);
+    --frunza: rgb(72, 160, 31);
+    --bata: rgb(175, 122, 9);
+
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 100;
+    src: url('../res/fonts/Exo2.0-Thin.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 300;
+    src: url('../res/fonts/Exo2.0-Light.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../res/fonts/Exo2.0-Regular.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../res/fonts/Exo2.0-Bold.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 900;
+    src: url('../res/fonts/Exo2.0-Black.otf');
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Exo;
+    color: inherit;
+}
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.fullbox{
+    width: 100%;
+    height: 100%;
+}
+.w100{
+    width: 100%;
+}
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0deg)
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+@media (orientation: portrait){
+    html{
+        font-size: 0.9rem;
+    }
+}
