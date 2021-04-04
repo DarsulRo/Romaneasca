@@ -8,6 +8,14 @@
     --frunza: rgb(72, 160, 31);
     --bata: rgb(175, 122, 9);
 
+    --razboinic: rgb(25, 25, 190);
+    --faimos: rgb(220, 30, 30);
+
+    --razboinic_dark: rgb(21, 21, 138);
+    --faimos_dark: rgb(172, 27, 27);
+
+
+    --turn: rgb(255, 237, 199);
 }
 @font-face{
     font-family: 'Exo';
@@ -46,6 +54,7 @@
     box-sizing: border-box;
     font-family: Exo;
     color: inherit;
+    user-select: inherit;
 }
 .flex-row{
     display: flex;

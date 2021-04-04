@@ -1,0 +1,273 @@
+body.flex-column{
+    min-height: 100vh;
+    justify-content: flex-start;
+    user-select: none;
+    background-image: url('../res/images/wood.png');
+}
+
+#over{
+    position: absolute;
+    z-index: 19;
+    width: 100%;
+    height: 100%;
+    background-color: var(--black);
+    color: var(--white);
+}
+#over .players-label{
+    z-index: 20;
+    position: absolute;
+    top: 1rem;
+    left:1rem;
+}
+#over .players-container{
+    z-index: 20;
+    position: absolute;
+    top: 3rem;
+    left:1rem;
+}
+#over .title{
+    position: absolute;
+    z-index: 20;
+    font-size: 3rem;
+    color: var(--white);
+    align-self: flex-start;
+    margin-top: 4rem;
+    font-weight: 600;
+}
+#over .side{
+    cursor: pointer;
+    height: 100%;
+    width: 50%;
+    opacity: 0.1;
+    color: var(--white);
+    transition: all 0.2s ease;
+}
+#over .side h3{
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+#over .side.razboinici{
+    background-color: var(--razboinic);
+}
+#over .side.faimosi{
+    background-color: var(--faimos);
+}
+#over .side:hover{
+    opacity: 0.6;
+}
+#over #ready{
+    position: absolute;
+    bottom: 1rem;
+    z-index: 20;
+    color: var(--white);
+    font-size: 1.25rem;
+}
+
+div.background{
+    background-image: radial-gradient(circle, rgb(216, 196, 81), rgb(189, 103, 5));
+    /*background-image: radial-gradient(circle, rgb(187, 56, 56) 0%,rgb(107, 12, 12) 70%, black 100%);*/
+
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    filter: saturate(0.85);
+    z-index: -1;
+    filter: opacity(0.60);
+}
+nav.flex-row{
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+nav .echipe >*{
+    margin: 0.2rem 1rem;
+    width: 10rem;
+    color: var(--white);
+    border-radius: 0.5rem;
+    font-size: 1.15rem;
+    justify-content: space-between;
+}
+nav .echipe .razboinici{
+    padding: 0.5rem;
+    background-color: var(--razboinic);
+    border: solid var(--razboinic_dark);
+    border-width: 0 0.25rem 0.25rem 0;
+}
+nav .echipe .faimosi{
+    padding: 0.5rem;
+    background-color: var(--faimos);
+    border: solid var(--faimos_dark);
+    border-width: 0 0.25rem 0.25rem 0;
+}
+nav .timer{
+    background-color: var(--white);
+    border-radius: 0 0 2rem 2rem;
+    font-weight: 500;
+    padding: 0.5rem 2rem ;
+    font-size: 1.25rem;
+    border: solid 0.3rem gainsboro;
+    border-width: 0 0.3rem 0.3rem 0.3rem;
+}
+nav .timer .round-label{
+    margin-right: 2rem;
+}
+nav .timer .bar-box{
+    overflow: hidden;
+    width: 10rem;
+    height: 2rem;
+    background-color: transparent;
+    border: solid gainsboro 0.2rem;
+    border-radius: 0.5rem;
+    position: relative;
+}
+nav .timer .bar-box .bar{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: orange;
+}
+
+nav .timer .bar-box .time-left{
+    position: absolute;
+    z-index: 15;
+}
+nav .leave{
+    /* background-color: var(--inima);
+    border-radius: 0 0 2rem 2rem;
+    font-weight: 500;
+    padding: 0.5rem 2rem ;
+    color: var(--white); */
+    text-decoration: none;
+}
+
+
+
+main.flex-row{
+    margin: 2rem 0;
+    width: 100%;
+    min-height: 50vh;
+    justify-content: space-between;
+}
+main aside{
+    justify-content: space-between;
+    min-width: 10vw;
+    height: 100%;
+}
+main aside .userbox{
+    width: 100%;
+    margin: 3rem 0;
+}
+.userbox .avatar{
+    background-color: var(--frunza);
+    height: 70%;
+}
+.userbox .name{
+    height: 5vw;
+    color: var(--white);
+    font-size: 2vw;
+    border-style: solid;
+}
+aside.left .userbox .name{
+    border-radius: 0 1rem 1rem 0;
+    border-width: 0 0.2rem 0.2rem 0;
+}
+aside.right .userbox .name{
+    border-radius:  1rem 0 0 1rem;
+    border-width: 0 0 0.2rem 0.2rem;
+}
+.userbox .razboinic{
+    background-color: var(--razboinic);
+    border-color: var(--razboinic_dark);
+}
+.userbox .faimos{
+    background-color: var(--faimos);
+    border-color: var(--faimos_dark);
+}
+
+
+main .gamebox{
+    width: 60vw;
+    padding: 1rem;
+}
+main .gamebox .cards{
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    left: -2rem;
+}
+main .gamebox .card{
+    width: 1rem;
+}
+
+
+#user{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    align-items: flex-end;
+}
+#user .call{
+    background-color: var(--white);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    width: 10rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: all 0.2s ease;
+}
+#user .call:hover{
+    box-shadow: 0 0 1rem 0.1rem lightgray;
+}
+#user .cards{
+    padding: 0 2rem;
+    bottom: 0;
+    height: 1rem;
+    border-radius: 2rem 2rem 0 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(206, 110, 0) ;
+}
+.card{
+    top:0;
+    position: relative;
+    height: 10rem;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+    margin: 0 0.5rem;
+}
+.card img{
+    height: 100%;
+    cursor: pointer;
+    filter: saturate(1.25);
+    box-shadow: 0 0 0.3rem 0 rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+}
+.card.inactive img{
+    filter: grayscale(0.5);
+}
+.card:hover{
+    top: -2rem;
+}
+
+
+.TURN{
+    animation: glowTurn 1s ease infinite;
+}
+.DISABLED .card{
+    filter: grayscale(0.7);
+}
+
+
+
+@keyframes glowTurn{
+    0%{
+        box-shadow: 0 0 0 0 var(--turn);
+    }
+    50%{
+        box-shadow: 0 0 1rem 0.5rem var(--turn);
+    }
+    100%{
+        box-shadow: 0 0 0 0 var(--turn);
+    }
+}

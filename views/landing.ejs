@@ -18,15 +18,20 @@
                 <img class="logo" src="../public/res/images/logo.png" alt="">
                 <h1>Românească</h1>
             </div>
-            <form action="/game" method="get" class="flex-column w100">
+            <form id="landing-form" action="/game" method="get" class="flex-column w100">
                 <div class="row flex-row">
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username" autocomplete="off">
                 </div>
-                <button id="play">JUACĂ</button>
+                <div class="row flex-row">
+                    <label for="room">Room code</label>
+                    <input type="text" name="room" id="room" autocomplete="off">
+                </div>
+                <button type="submit" id="play">JUACĂ</button>
             </form>
         </div>
     </main>
+    
 </body>
-
+<script src="../public/scripts/landingscript.js"></script>
 </html>

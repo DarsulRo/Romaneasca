@@ -1,14 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/styles/root.css">
+    <link rel="stylesheet" href="../public/styles/game.css">
     <title>Game</title>
 </head>
-<body>
-    GAMEEEE
+
+<body class="flex-column">
+
+    <div id="over" class="flex-row">
+        <div class="players-label flex-row"> Players [0/4] :</div>
+        <div class="players-container flex-row"></div>
+        <div class="title">
+            Alege echipa
+        </div>
+       <div id="choose_razboinici" team="0" class="flex-column razboinici side">
+            <h3>Războinicii</h3>
+            <div class="flex-column members">
+
+            </div>
+       </div>
+       <div id="choose_faimosi" team="1" class="flex-column faimosi side">
+            <h3>Faimoșii</h3>
+            <div class="flex-column members">
+                
+            </div>
+       </div>
+       <div id="ready">
+           Players ready... [0/4]
+       </div>
+    </div>
+
+    <div class="background">
+    </div>
+
+    <nav class="flex-row">
+        <div class="echipe flex-column">
+            <div class="razboinici flex-row">
+                <p>Razboinicii: </p>
+                <span class="scor">0</span>
+            </div>
+            <div class="faimosi flex-row">
+                <p>Faimoșii: </p>
+                <span class="scor">0</span>
+            </div>
+        </div>
+        <div class="timer flex-row">
+            <h4 id="round-label" class="round-label">Round 1</h4>
+            <div class="bar-box flex-row">
+                <h4 id="time-left" class="time-left"></h4>
+                <div id="bar" class="bar"></div>
+            </div>
+        </div>
+        <a class="leave" href="/">
+        </a>
+    </nav>
+    <main class="flex-row">
+        <aside class="left flex-column">
+            <div class="userbox">
+                <div  team="0" player="0" class="name flex-row razboinic TURN" ></div>
+            </div>
+            <div class="userbox">
+                <div team="1" player="1" class="name flex-row faimos"> </div>
+            </div>
+        </aside>
+        <div class="gamebox flex-row">
+            <div id="table-cards" class="cards flex-row">
+               
+            </div>
+        </div>
+        <aside class="flex-column right">
+            <div class="userbox">
+                <div team="1" player="0" class="name flex-row faimos"></div>
+            </div>
+            <div class="userbox">
+                <div team="0" player="1" class="name flex-row razboinic"></div>
+            </div>
+        </aside>
+
+    </main>
+    <div id="user" class="flex-row">
+        
+        <div class="flex-row call">
+            Dăi de mare!
+        </div>
+        <div id="my-cards" class="cards flex-row">
+          
+        </div>
+        <div class="flex-row call">
+            Prinde!
+        </div>
+
+    </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
-<script src="../public/scripts/game.js"></script>
+<script src="../public/scripts/gamescript.js"></script>
+
 </html>
