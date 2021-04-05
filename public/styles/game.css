@@ -157,32 +157,44 @@ main aside{
 main aside .userbox{
     width: 100%;
     margin: 3rem 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
-.userbox .avatar{
-    background-color: var(--frunza);
-    height: 70%;
-}
-.userbox .name{
-    height: 5vw;
+.userbox{
     color: var(--white);
-    font-size: 2vw;
+    font-size: 1.5rem;
     border-style: solid;
 }
-aside.left .userbox .name{
+.userbox .catcher{
+    height: 2.5rem;
+    width: 2.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: invert(1);
+    margin: 0.5rem;
+}
+.userbox.CATCHED .catcher{
+    background-image: url('../res/images/grab.png');
+}
+aside.left .userbox{
     border-radius: 0 1rem 1rem 0;
     border-width: 0 0.2rem 0.2rem 0;
 }
-aside.right .userbox .name{
+aside.right .userbox{
     border-radius:  1rem 0 0 1rem;
     border-width: 0 0 0.2rem 0.2rem;
 }
-.userbox .razboinic{
+.userbox.razboinic{
     background-color: var(--razboinic);
     border-color: var(--razboinic_dark);
 }
-.userbox .faimos{
+.userbox.faimos{
     background-color: var(--faimos);
     border-color: var(--faimos_dark);
+}
+.userbox .name{
+    margin: 1vw;
 }
 
 
@@ -269,5 +281,19 @@ main .gamebox .card{
     }
     100%{
         box-shadow: 0 0 0 0 var(--turn);
+    }
+}
+.TABLE-CARD{
+    animation: cardIn 0.5s ease;
+    position: relative;
+}
+@keyframes cardIn{
+    0%{
+        left: 3rem;
+        top: 1rem;
+    }
+    100%{
+        left: 0rem;
+        top: 0;
     }
 }

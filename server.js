@@ -28,7 +28,6 @@ app.get('/game',(req,res)=>{
 
 
 
-
 let parties = []
 let allPlayers = []
 //SOCKET 
@@ -68,8 +67,6 @@ io.on('connection', socket =>{
         socket.join(room)
         io.to(room).emit('updateRoom',party.game)
         io.to(room).emit('updateTeam',party.game)
-        
-        
     })
 
 
@@ -85,11 +82,11 @@ io.on('connection', socket =>{
 
             if(party.game.readyCount == 4)  //INITIATING GAME
             {
-                let count = 3
+                let count = party.game.startingTime
                 let starting = setInterval(function(){
                     if(party.game.readyCount<4){
                         clearInterval(starting)
-                        count = 3
+                        count = party.game.startingTime
                         return
                     }
                     
@@ -107,9 +104,6 @@ io.on('connection', socket =>{
                                 io.to(player.id).emit('sendCards',player.cards)
                             })
                         });
-
-                        //party.game.emitHello(socket)
-
                         //////////////////////
                     }
                     count --;
@@ -118,32 +112,28 @@ io.on('connection', socket =>{
         }
     })
 
-    socket.on('playCard', ()=>{
+    socket.on('playCard', ({card,room})=>{
+        let party = parties[getPartyIndex(room)]
+
+        party.game.playCard(socket.id, card, io)
+    })
+    socket.on('catched',()=>{
         
     })
+
     socket.on('disconnect',()=>{
-
-        
-
         let allPlayersIndex = getPlayerIndex(allPlayers, socket.id)
         if(allPlayersIndex>-1){
-
-
-
             let playerPartyIndex = allPlayers[allPlayersIndex].partyIndex 
             let playerIndex = getPlayerIndex(parties[playerPartyIndex].game.players, socket.id)
             let room = allPlayers[allPlayersIndex].room
 
-            
             allPlayers.splice(allPlayersIndex,1)
 
             if(parties[playerPartyIndex].game.started==1){
                 parties[playerPartyIndex].game.stopGame(io)
-                
             }
-
             // console.log('leaving - ', allPlayers[allPlayersIndex].username)
-            
             //remove player from teams
             let team0Index = getPlayerIndex(parties[playerPartyIndex].game.teams[0].players, socket.id)
             let team1Index = getPlayerIndex(parties[playerPartyIndex].game.teams[1].players, socket.id)
