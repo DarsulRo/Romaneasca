@@ -261,8 +261,26 @@ main .gamebox .card{
 .card:hover{
     top: -2rem;
 }
-
-
+#user .willCatch{
+    width: 10rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--white);
+    border: solid 0.2rem gainsboro;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+    cursor: pointer;
+}
+#user .chat{
+    width: 10rem;
+}
+.INVISIBLE{
+    visibility: hidden;
+}
+.GLOW{
+    animation: glowTurn 1s ease infinite;
+}
 .TURN{
     animation: glowTurn 1s ease infinite;
 }

@@ -40,11 +40,11 @@
 
     <nav class="flex-row">
         <div class="echipe flex-column">
-            <div class="razboinici flex-row">
+            <div class="razboinici flex-row" team="0">
                 <p>Razboinicii: </p>
                 <span class="scor">0</span>
             </div>
-            <div class="faimosi flex-row">
+            <div class="faimosi flex-row" team="1">
                 <p>Faimoșii: </p>
                 <span class="scor">0</span>
             </div>
@@ -88,9 +88,14 @@
 
     </main>
     <div id="user" class="flex-row">
-        <div class="willCatch"></div>
+        <div class='chat'>
+
+        </div>
         <div id="my-cards" class="cards flex-row">
           
+        </div>
+        <div onclick="wontCatch()" class="willCatch GLOW INVISIBLE">
+            Apasa daca nu vrei sa prinzi
         </div>
 
     </div>

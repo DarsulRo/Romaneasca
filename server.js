@@ -114,13 +114,12 @@ io.on('connection', socket =>{
 
     socket.on('playCard', ({card,room})=>{
         let party = parties[getPartyIndex(room)]
-
         party.game.playCard(socket.id, card, io)
     })
-    socket.on('catched',()=>{
-        
+    socket.on('wontCatch',()=>{
+        let party = parties[getPartyIndex(room)]
+        party.game.willCatchAgain = 0
     })
-
     socket.on('disconnect',()=>{
         let allPlayersIndex = getPlayerIndex(allPlayers, socket.id)
         if(allPlayersIndex>-1){

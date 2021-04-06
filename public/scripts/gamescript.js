@@ -69,17 +69,16 @@ socket.on('startingIn', function(count){
     }
 })
 
-
+socket.on('resetRoom', function(game){
+    document.getElementById("over").style.display='flex'
+    document.getElementById('ready').innerText = 'Players ready... [0/4]'
+})
 socket.on('sendCards', function(cards){
     clearMyCards()
     let mycards = document.getElementById('my-cards')
     cards.forEach(card =>{
         mycards.insertAdjacentHTML('beforeend',buildMyCard(card))
     })
-})
-socket.on('resetRoom', function(game){
-    document.getElementById("over").style.display='flex'
-    document.getElementById('ready').innerText = 'Players ready... [0/4]'
 })
 socket.on('clearCards',()=>{
    clearMyCards()
@@ -91,9 +90,9 @@ socket.on('newRound', (round)=>{
     document.getElementById('round-label').innerText=`Round ${round}`
     clearTableCards()
 })
-socket.on('newTurn', (turn)=>{
+socket.on('newTurn', (ord)=>{
     disableCards()
-    setPlayerTurn(turn.player, turn.order)
+    setPlayerTurn(ord.team, ord.player)
 })
 socket.on('myTurn',()=>{
     enableCards()
@@ -146,12 +145,12 @@ function disableCards(){
 function enableCards(){
     document.getElementById('my-cards').classList.remove('DISABLED')
 }
-function setPlayerTurn(turnPlayer, order){
+function setPlayerTurn(t, p){
     let players = document.querySelectorAll('.userbox[team][player]')
     players.forEach(player =>{
         player.classList.remove('TURN')
     })
-    document.querySelector(`[team="${order[turnPlayer].team}"][player="${order[turnPlayer].player}"]`).classList.add('TURN')
+    document.querySelector(`[team="${t}"][player="${p}"]`).classList.add('TURN')
 }
 function playCard(card){
     socket.emit('playCard', {card:card, room: params.get('room')})
@@ -169,6 +168,22 @@ socket.on('catched', (ord)=>{
     document.querySelector(`[team="${ord.team}"][player="${ord.player}"]`).classList.add('CATCHED')
 
 })
-socket.on('willCatch', (baseCard)=>{
+socket.on('willCatch', (can)=>{
+    if(can==1){
+        document.querySelector('.willCatch').classList.remove('INVISIBLE')
+    }
+    else{
+        document.querySelector('.willCatch').classList.add('INVISIBLE')
+    }
+})
+function wontCatch(){
+    socket.emit('wontCatch')
+}
 
+socket.on('updateScore', teams=>{
+    let razboinici = document.querySelector(`nav [team="0"] .scor`)
+    razboinici.innerHTML = teams[0].points
+
+    let faimosi = document.querySelector(`nav [team="1"] .scor`)
+    faimosi.innerHTML = teams[1].points
 })

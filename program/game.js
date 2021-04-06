@@ -23,7 +23,7 @@ class Game {
             cards[random] = aux;
         }
     }
-    
+
     //players and teams
     players = []
     teams = [
@@ -36,36 +36,34 @@ class Game {
             points: 0
         }
     ]
-    order = [{team:0, player:0}, {team:1, player: 0}, {team:0, player:1},{team:1,player:1}]
+    order = [{ team: 0, player: 0 }, { team: 1, player: 0 }, { team: 0, player: 1 }, { team: 1, player: 1 }]
     playerCount = 0
     readyCount = 0
 
     // Rounds and turns
-    roundCount = 0
-    turnCount = 1
-    turnPlayer = -1
+    roundCount
+    setCount
+    turnCount
+    turnPlayer
 
-    basePlayer = 0 
-    baseCard = 0
-    catchedBy = 0
-    canCatchAgain = 0
-    willCatchAgain = 0
+    basePlayer
+    baseCard
+    catchedBy
+    canCatchAgain
+    willCatchAgain
 
     //constants
     step = 50
     second = 1000
-    turnTime = 10000
-    roundTime = 4*this.turnTime
+    turnTime = 10 * this.second
 
     //variables
-    time = 0 
-    seconds = 0
-    startTurnTime = 0 
-    startRoundTime = 0 
+    time
+    seconds
 
     //cards related
-    cardPlayedThisTurn = -1  // 0- not plyed yet |  1 - played | -1 first time
-    
+    cardPlayedThisTurn  // 0- not plyed yet |  1 - played | -1 first time
+
     joinTeam(id, username, team) {
         if (this.teams[team].players.length < 2) {
             this.teams[team].players.push({
@@ -90,175 +88,239 @@ class Game {
         }
     }
     // STARING GAME
-    
+
     startGame(io) {
         io.to(this.room).emit('clearCards')
         this.started = 1
-        this.cardsInHand = 4
-        this.sendCards(4, this.turnPlayer+1, io)
+        // this.cardsInHand = 4
+        // this.sendCards(4, this.turnPlayer + 1, io)
 
-        let interval = setInterval(async ()=>{
+        let interval = setInterval(async () => {
+
+            if (this.isTurn()) {
+                //daca nu a jucat carte
+                if (this.roundCount != 0 && this.cardPlayedThisTurn == 0) {
+                    this.forcePlayCard(io)
+                }
 
 
-            if(this.time%this.turnTime == 0 && (this.turnCount != 1 || this.roundCount != 0)){
                 this.endTurn(io)
             }
+            if (this.isTurn() && this.turnCount % 4 == 1) {
+                this.endSet(io)
+            }
+            if (this.isTurn() && this.turnCount % 4 == 1 && this.canCatchAgain==0) {
+                this.endRound(io)
+            }
 
-            if(this.cardIndex>=32){
-                this.started= 0
+            //FULL STOP
+            if(this.cardsInHand < 1){
+                this.started = 0
                 clearInterval(interval)
-                console.log('gata cartile')
+                console.log('sa gatat')
                 return
             }
 
-            if(this.turnCount%4==1 && this.time%this.turnTime == 0 && this.started==1 && this.cardIndex<32){
-                if(this.canCatchAgain == 1 && this.basePlayer!=this.catchedBy){
-                    //nothing, so it will start a new turn
-                    console.log('will catch?')
-                    io.to(this.basePlayer).emit('willCatch',this.baseCard)
-                }
-                else{
-                    this.newRound(io)
-                }
+            //NEW CYCLE
+            if (this.isTurn() && this.turnCount % 4 == 1 && this.canCatchAgain==0) {
+                this.newRound(io)
             }
-
-            if(this.time%this.turnTime==0 && this.started==1)
-            {
+            if (this.isTurn() && this.turnCount % 4 == 1) {
+                this.newSet(io)
+            }
+            if (this.isTurn()) {
                 this.newTurn(io)
             }
 
-            if(this.time%this.second == 0 && this.started==1){
+
+            if (this.time % this.second == 0) {
                 this.newSecond(io)
             }
-
-
-            this.time+= this.step
-            this.seconds= Math.floor(this.time/1000)
+            this.time += this.step
+            this.seconds = Math.floor(this.time / 1000)
         }, this.step)
 
     }
-    
-    async newRound(io){
-        this.turnCount = 1
-        this.roundCount++
-        this.time= 0
-        this.seconds = 0
-        this.tableCards = []
-        this.basePlayer = this.catchedBy
+    isTurn() {
+        return (this.time % this.turnTime == 0) && this.started == 1
+    }
+
+    // RUNDA
+    newRound(io) {
+        console.log('new round', this.roundCount)
         io.to(this.room).emit('newRound', this.roundCount)
-    }
-    async endRound(io){
+        this.tableCards = []
 
+        this.setCount = 1
     }
-    async newTurn(io){
-        
+    endRound(io) {
+        this.basePlayer = this.catchedBy
+        this.turnPlayer = this.basePlayer
+        this.scoreCards(io)
+
+        //inceput de runda
+        this.fillCards(io)
+        this.roundCount++
+    }
+
+    //SET 
+    newSet(io) {
+        console.log('new set', this.setCount)
+        this.turnCount = 1
+    }
+    endSet(io) {
+
+        if(this.turnCount%4 == 1 && this.turnCount > 1 && this.basePlayer%2 != this.catchedBy%2){
+            let p = this.players[this.getPlayerIndexByOrder(this.basePlayer)].id
+            if(this.canCatchAgain == 1){
+                io.to(p).emit('willCatch',1)
+
+            }
+        }
+
+
+        this.cardsInHand--
+
+        //new set
+        this.setCount++
+    }
+
+    //TURA
+    newTurn(io) {
+        console.log('new turn', this.turnCount)
+        console.log('player', this.turnPlayer)
         console.log('')
-        //normal turn
+
         this.cardPlayedThisTurn = 0
-        this.turnPlayer = (this.turnPlayer+1) % 4
-
-        let turn = {
-            player: this.turnPlayer,
-            order: this.order,
-            turn: this.turnCount
+        let ord = {
+            team: this.order[this.turnPlayer].team,
+            player: this.order[this.turnPlayer].player
         }
+        io.to(this.room).emit('newTurn', ord)
+
         let player = this.players[this.getPlayerIndexByOrder(this.turnPlayer)]
-
-        io.to(this.room).emit('newTurn', turn)
         io.to(player.id).emit('myTurn')
-
-
-        console.log('round:',this.roundCount,'  turn:', this.turnCount)
-        this.turnCount++
     }
-    async endTurn(io){
-        if(this.cardPlayedThisTurn == 0){ 
+    endTurn(io) {
 
-            let playerId = this.players[this.getPlayerIndexByOrder(this.turnPlayer)].id
-            let team = this.order[this.turnPlayer].team
-            let player = this.order[this.turnPlayer].player
-            
-            let card = this.teams[team].players[player].cards[0]
-            this.playCard(playerId,card,io)
 
-        }
+        io.to(this.room).emit('willCatch', 0)
+
+        //inceput de tura 
+
+        this.turnCount++;
+        this.turnPlayer = (this.turnPlayer + 1) % 4
+        this.cardPlayedThisTurn = 0
     }
-    async newSecond(io){
-        let obj={
-            timeLeft: (this.turnTime - this.time % this.turnTime)/this.second,
-            turnTime: this.turnTime/this.second
+
+
+    newSecond(io) {
+        let obj = {
+            timeLeft: (this.turnTime - this.time % this.turnTime) / this.second,
+            turnTime: this.turnTime / this.second
         }
         io.to(this.room).emit('newSecond', obj)
     }
 
-    fillCards(){
-        let number = Math.min(4-this.cardsInHand, (32-this.cardIndex)/4)
+
+    fillCards(io) {
+        let number = Math.min(4 - this.cardsInHand, (32 - (this.cardIndex-1)) / 4)
         this.sendCards(number, this.turnPlayer, io)
+        this.cardsInHand = this.cardsInHand + number
     }
-    sendCards(number, turnPlayer, io){
+    sendCards(number, turnPlayer, io) {
+        if(number==0)return
         for (let k = 0; k < number; k++) {
-            for(let i = 0; i <4; i++){
-                let p = (i+turnPlayer)%4
+            for (let i = 0; i < 4; i++) {
+                let p = (i + turnPlayer) % 4
                 this.teams[this.order[p].team].players[this.order[p].player].cards.push(this.cards[this.cardIndex++])
             }
         }
         this.emitCards(io)
     }
-    emitCards(io){
+    emitCards(io) {
         this.teams.forEach(team => {
-            team.players.forEach(player =>{
-                io.to(player.id).emit('sendCards',player.cards)
+            team.players.forEach(player => {
+                io.to(player.id).emit('sendCards', player.cards)
             })
         });
     }
 
-    playCard(id, card, io){
+    playCard(id, card, io) {
         let playerId = this.players[this.getPlayerIndexByOrder(this.turnPlayer)].id
 
-        if(id==playerId && this.cardPlayedThisTurn==0){
+        //DACA POATE JUCA
+        if (id == playerId && this.cardPlayedThisTurn == 0) {
+
+            // *S
+            // REMOVE CARD FROM PLAYER HAND
             this.cardPlayedThisTurn = 1
-            this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards = this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards.filter(carte =>{
-                return card!=carte
+            this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards = this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards.filter(carte => {
+                return card != carte
             })
             this.tableCards.push(card)
 
-            if(this.getValue(card) == this.getValue(this.baseCard) || this.getValue(card) == 7){
+            // SETEZ PRIMA CARTE (BAZA)
+            if (this.turnCount == 1 && this.setCount == 1) {
+                this.baseCard = card
+                this.basePlayer = this.turnPlayer
+            }
+
+            //PRINDE
+            if (this.getValue(card) == this.getValue(this.baseCard) || this.getValue(card) == 7) {
                 this.catchedBy = this.turnPlayer
-                let ord={
+                let ord = {
                     team: this.order[this.turnPlayer].team,
                     player: this.order[this.turnPlayer].player
                 }
                 io.to(this.room).emit('catched', ord)
             }
 
+            //CHECK IF CAN CATCH AGAIN
+            if(this.turnCount == 4){
+                this.canCatchAgain = 0
+                //this.willCatchAgain = 0
+                let t= this.order[this.basePlayer].team
+                let p = this.order[this.basePlayer].player
+
+                if(this.basePlayer%2 != this.catchedBy%2){ //daca este prins de adversar
+                    this.teams[t].players[p].cards.forEach(carte =>{ 
+                        if(this.getValue(carte) == this.getValue(this.baseCard) || this.getValue(carte) == 7){
+                            this.canCatchAgain = 1
+                        }
+                    })
+                }
+            }
+
             io.to(id).emit('sendCards', this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards)
             io.to(this.room).emit('cardPlayed', card)
         }
+    }
+    forcePlayCard(io) {
+        let t = this.order[this.turnPlayer].team
+        let p = this.order[this.turnPlayer].player
 
-        let cards = this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards
-        
-        if(this.turnCount-1 == 1){
-            this.baseCard =  this.tableCards[0]
-        }
+        let player = this.teams[t].players[p]
+        this.playCard(player.id, player.cards[0], io)
+    }
+    scoreCards(io){
+        let t = this.order[this.basePlayer].team
 
-        if((this.turnPlayer+4)%4 == this.basePlayer){
-            this.canCatchAgain = 0 
-            cards.forEach(carte =>{
-                if(this.getValue(carte) === this.getValue(this.baseCard) || this.getValue(carte) == 7){
-                    this.canCatchAgain = 1
-                }
-            })
-        }
-        
-        console.log('turnPlayer:',this.turnPlayer, '  basePlayer:',this.basePlayer,'  catchedBy:', this.catchedBy)
+        this.tableCards.forEach(card =>{
+            if(this.getValue(card)>9){
+                this.teams[t].points += 1
+            }
+        })
+        io.to(this.room).emit('updateScore', this.teams)
     }
 
-    
-    stopGame(io){
+
+
+    stopGame(io) {
         this.resetRoom(io)
     }
-    resetRoom(io){
-        this.started=0
+    resetRoom(io) {
+        this.started = 0
         this.teams = [
             {
                 players: [],
@@ -272,22 +334,31 @@ class Game {
         this.readyCount = 0
 
         this.initGame()
-        io.to(this.room).emit('resetRoom', this)  
+        io.to(this.room).emit('resetRoom', this)
         io.to(this.room).emit('updateRoom', this)
         io.to(this.room).emit('updateTeam', this)
     }
-    initGame(){
+    initGame() {
         this.resetGame()
     }
     resetGame() {
         this.cardIndex = 1
+        this.cardsInHand = 1
+
+        this.roundCount = 0
+        this.setCount = 0
+        this.turnCount = 0
         this.turnPlayer = -1
-        this.catchedBy = 0
-        this.baseCard = 0 
+
         this.basePlayer = 0
+        this.baseCard = 0
+        this.catchedBy = 0
+        this.canCatchAgain = 0
+        this.willCatchAgain = 0
+        this.cardPlayedThisTurn = -1
+
         this.time = 0
         this.seconds = 0
-        this.startTurnTime = 0
         this.shuffleCards(this.cards)
     }
     getPlayerIndex(players, id) {
@@ -296,15 +367,17 @@ class Game {
         })
         return index
     }
-    getPlayerIndexByOrder(orderIndex){
-        let index = this.players.findIndex(player =>{
+    getPlayerIndexByOrder(orderIndex) {
+        let index = this.players.findIndex(player => {
             return player.id == this.teams[this.order[orderIndex].team].players[this.order[orderIndex].player].id
         })
         return index
     }
-    getValue(card){
-        let value = card.toString().substr(2,card.length-2)
+    getValue(card) {
+        let value = card.toString().substr(2, card.length - 2)
         return value
     }
 }
 module.exports = Game
+
+//*S - possible security or performance issue
