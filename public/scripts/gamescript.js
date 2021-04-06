@@ -169,6 +169,6 @@ socket.on('catched', (ord)=>{
     document.querySelector(`[team="${ord.team}"][player="${ord.player}"]`).classList.add('CATCHED')
 
 })
-socket.on('willCatch', ()=>{
+socket.on('willCatch', (baseCard)=>{
 
 })

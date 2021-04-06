@@ -99,15 +99,23 @@ class Game {
 
         let interval = setInterval(async ()=>{
 
+
+            if(this.time%this.turnTime == 0 && (this.turnCount != 1 || this.roundCount != 0)){
+                this.endTurn(io)
+            }
+
             if(this.cardIndex>=32){
+                this.started= 0
                 clearInterval(interval)
+                console.log('gata cartile')
                 return
             }
 
             if(this.turnCount%4==1 && this.time%this.turnTime == 0 && this.started==1 && this.cardIndex<32){
                 if(this.canCatchAgain == 1 && this.basePlayer!=this.catchedBy){
                     //nothing, so it will start a new turn
-                    io.to(this.basePlayer).emit('willCatch')
+                    console.log('will catch?')
+                    io.to(this.basePlayer).emit('willCatch',this.baseCard)
                 }
                 else{
                     this.newRound(io)
@@ -129,6 +137,7 @@ class Game {
         }, this.step)
 
     }
+    
     async newRound(io){
         this.turnCount = 1
         this.roundCount++
@@ -136,31 +145,13 @@ class Game {
         this.seconds = 0
         this.tableCards = []
         this.basePlayer = this.catchedBy
-
-        /// THE SAME AS BELOW
-        if(this.cardPlayedThisTurn == 0 && this.turnCount%4==1 && this.roundCount>1){ 
-            let playerId = this.players[this.getPlayerIndexByOrder(this.turnPlayer)].id
-            let team = this.order[this.turnPlayer].team
-            let player = this.order[this.turnPlayer].player
-            
-            let card = this.teams[team].players[player].cards[0]
-            this.playCard(playerId,card,io)
-        }
-
         io.to(this.room).emit('newRound', this.roundCount)
+    }
+    async endRound(io){
+
     }
     async newTurn(io){
         
-        //check if last player didn't play a card THE SAME AS ABOVE
-        if(this.cardPlayedThisTurn == 0 && (this.turnCount+3)%4!=1){
-            let playerId = this.players[this.getPlayerIndexByOrder(this.turnPlayer)].id
-            let team = this.order[this.turnPlayer].team
-            let player = this.order[this.turnPlayer].player
-
-            let card = this.teams[team].players[player].cards[0]
-            this.playCard(playerId,card,io)
-        }
-
         console.log('')
         //normal turn
         this.cardPlayedThisTurn = 0
@@ -179,6 +170,18 @@ class Game {
 
         console.log('round:',this.roundCount,'  turn:', this.turnCount)
         this.turnCount++
+    }
+    async endTurn(io){
+        if(this.cardPlayedThisTurn == 0){ 
+
+            let playerId = this.players[this.getPlayerIndexByOrder(this.turnPlayer)].id
+            let team = this.order[this.turnPlayer].team
+            let player = this.order[this.turnPlayer].player
+            
+            let card = this.teams[team].players[player].cards[0]
+            this.playCard(playerId,card,io)
+
+        }
     }
     async newSecond(io){
         let obj={
