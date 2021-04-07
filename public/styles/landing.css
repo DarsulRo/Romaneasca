@@ -13,14 +13,23 @@ body{
     max-width: 95%;
     margin-top: 5rem;
 }
+.title-card{
+    width: 100%;
+}
 .title-card .logo{
     height: 10rem;
     position: relative;
     top: -7rem;
     margin-bottom: -5rem;
 }
-.title-card h1{
+.title-card .title{
+    margin-bottom: 1rem;
+}
+.title-card .subtitle{
+    font-weight: 500;
+    font-style: italic;
     margin-bottom: 2rem;
+    align-self: flex-end;
 }
 
 .row{

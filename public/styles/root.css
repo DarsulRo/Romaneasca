@@ -17,11 +17,18 @@
 
     --turn: rgb(255, 237, 199);
 }
+
 @font-face{
     font-family: 'Exo';
     font-style: normal;
     font-weight: 100;
     src: url('../res/fonts/Exo2.0-Thin.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 200;
+    src: url('../res/fonts/Exo2.0-ExtraLight.otf');
 }
 @font-face{
     font-family: 'Exo';
@@ -38,8 +45,26 @@
 @font-face{
     font-family: 'Exo';
     font-style: normal;
+    font-weight: 500;
+    src: url('../res/fonts/Exo2.0-Medium.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../res/fonts/Exo2.0-SemiBold.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
     font-weight: 700;
     src: url('../res/fonts/Exo2.0-Bold.otf');
+}
+@font-face{
+    font-family: 'Exo';
+    font-style: normal;
+    font-weight: 800;
+    src: url('../res/fonts/Exo2.0-ExtraBold.otf');
 }
 @font-face{
     font-family: 'Exo';

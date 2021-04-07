@@ -4,6 +4,8 @@ let choose_razboinici = document.getElementById("choose_razboinici")
 let choose_faimosi = document.getElementById("choose_faimosi")
 
 const params = new URLSearchParams(window.location.search)
+document.title = `Room [${params.get('room')}]`
+
 socket.emit('joinRoom',{
     room: params.get('room'),
     username: params.get('username')
@@ -41,7 +43,7 @@ socket.on('updateTeam', function(game){
     updateTeams(game)
 })
 function updateTeams(game){
-    let sides = document.querySelectorAll('[team] > .members')
+    let sides = document.querySelectorAll('.side[team] > .members')
     sides.forEach(side => {
         side.innerHTML=''
     });
@@ -57,13 +59,14 @@ function updateTeams(game){
 
 socket.on('gameStarted', (game)=>{
     game.order.forEach(ord=>{
-        let box = document.querySelector(`[team="${ord.team}"][player="${ord.player}"] > .name`)
+        let box = document.querySelector(`.userbox[team="${ord.team}"][player="${ord.player}"] > .name`)
         box.innerText=game.teams[ord.team].players[ord.player].username
     })
+    document.getElementById('endGame').style.display='none'
 })
 socket.on('startingIn', function(count){
 
-    document.getElementById('ready').innerText = count
+    document.getElementById('ready').innerText = `Starting in ${count}`
     if(count == 0){
         document.getElementById("over").style.display='none'
     }
@@ -150,7 +153,7 @@ function setPlayerTurn(t, p){
     players.forEach(player =>{
         player.classList.remove('TURN')
     })
-    document.querySelector(`[team="${t}"][player="${p}"]`).classList.add('TURN')
+    document.querySelector(`.userbox[team="${t}"][player="${p}"]`).classList.add('TURN')
 }
 function playCard(card){
     socket.emit('playCard', {card:card, room: params.get('room')})
@@ -165,7 +168,7 @@ socket.on('catched', (ord)=>{
     players.forEach(player =>{
         player.classList.remove('CATCHED')
     })
-    document.querySelector(`[team="${ord.team}"][player="${ord.player}"]`).classList.add('CATCHED')
+    document.querySelector(`.userbox[team="${ord.team}"][player="${ord.player}"]`).classList.add('CATCHED')
 
 })
 socket.on('willCatch', (can)=>{
@@ -177,8 +180,9 @@ socket.on('willCatch', (can)=>{
     }
 })
 function wontCatch(){
-    socket.emit('wontCatch')
+    socket.emit('wontCatch', params.get('room'))
 }
+
 
 socket.on('updateScore', teams=>{
     let razboinici = document.querySelector(`nav [team="0"] .scor`)
@@ -187,3 +191,52 @@ socket.on('updateScore', teams=>{
     let faimosi = document.querySelector(`nav [team="1"] .scor`)
     faimosi.innerHTML = teams[1].points
 })
+
+socket.on('endGame',(teams)=>{
+    document.getElementById('time-left').innerText = 'Game Over'
+    let bar = document.getElementById('bar')
+    bar.style.left = "-100%"
+
+    let points = document.querySelectorAll('#endGame .score .points')
+    let cartiDuse = document.querySelectorAll('#endGame .score .cartiDuse')
+    for(let i = 0;i<2;i++){
+        points[i].innerHTML= teams[i].points + ' Puncte'
+        cartiDuse[i].innerHTML =teams[i].cartiDuse + ' Cărți'
+    }
+    document.getElementById('endGame').style.display = 'flex'
+
+})
+
+let chatForm = document.getElementById('chat-form')
+chatForm.addEventListener('submit',()=>{
+    let input = document.getElementById('chat-input')
+    if(input.value == '')return
+    let util = {
+        room: params.get('room'),
+        message: input.value
+    }
+    socket.emit('sendChatMessage', util)
+    input.value=''
+})
+function shout(target){
+    let util = {
+        room: params.get('room'),
+        message: target.innerText
+    }
+    socket.emit('sendChatMessage', util)
+}
+
+socket.on('chatMessage', util=>{
+    let messageBox = document.querySelector(`.userbox[team="${util.team}"][player="${util.player}"] .messageBox`)
+    messageBox.insertAdjacentHTML('beforeend',generateMessage(util.message, util.code))
+    setTimeout(() =>{
+        document.querySelector(`[code="${util.code}"]`).remove()
+    },5000)
+})
+function generateMessage(msg,code){
+    return `<div code="${code}"class="message FADEIN">${msg}</div>`
+}
+
+
+
+

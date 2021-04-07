@@ -130,7 +130,7 @@ nav .timer .bar-box .bar{
 
 nav .timer .bar-box .time-left{
     position: absolute;
-    z-index: 15;
+    z-index: 3;
 }
 nav .leave{
     /* background-color: var(--inima);
@@ -153,6 +153,7 @@ main aside{
     justify-content: space-between;
     min-width: 10vw;
     height: 100%;
+    position: relative;
 }
 main aside .userbox{
     width: 100%;
@@ -165,6 +166,7 @@ main aside .userbox{
     color: var(--white);
     font-size: 1.5rem;
     border-style: solid;
+    position: relative;
 }
 .userbox .catcher{
     height: 2.5rem;
@@ -196,6 +198,33 @@ aside.right .userbox{
 .userbox .name{
     margin: 1vw;
 }
+.userbox .messageBox{
+    position: absolute;
+    top:0;
+    max-height: 10rem;
+    width: 10rem;
+}
+aside.players .message{
+    position: absolute;
+    overflow-y: auto;
+    width: 100%;
+    padding: 0 1rem;
+    font-size: 1rem;
+    background-color: var(--white);
+    color: var(--black);
+    border: solid var(--white);
+    border-width: 0.7rem 0 0.7rem 0;
+    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.5);
+    opacity: 0.9;
+    font-weight: 700;
+}
+aside.players.left .messageBox{
+    right: -11rem;
+}
+aside.players.right .messageBox{
+    left: -11rem;
+}
 
 
 main .gamebox{
@@ -218,6 +247,8 @@ main .gamebox .card{
     bottom: 0;
     width: 100%;
     align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 1rem;
 }
 #user .call{
     background-color: var(--white);
@@ -238,7 +269,7 @@ main .gamebox .card{
     border-radius: 2rem 2rem 0 0;
     align-items: center;
     justify-content: center;
-    background-color: rgb(206, 110, 0) ;
+    background-color: orange;
 }
 .card{
     top:0;
@@ -262,7 +293,7 @@ main .gamebox .card{
     top: -2rem;
 }
 #user .willCatch{
-    width: 10rem;
+    width: 20rem;
     padding: 1rem;
     border-radius: 1rem;
     background-color: var(--white);
@@ -272,9 +303,114 @@ main .gamebox .card{
     text-align: center;
     cursor: pointer;
 }
-#user .chat{
-    width: 10rem;
+#user .chat-container{
+    width: 20rem;
+    margin-bottom: 1rem;
 }
+#user .chat{
+    width: 80%;
+    padding: 0.5rem 1rem;
+    background-color: var(--white);
+    border-radius: 1rem;
+}
+#user .chat input{
+    width: 85%;
+    padding: 0.25rem;
+    background-color: transparent;
+    border-width: 0 0 0.2rem 0;
+    font-size: 1.15rem;
+    border-color: var(--black);
+    color: var(--black);
+    outline: none;
+}
+#user .chat .send{
+    width: 15%;
+    margin-left: 1rem;
+    padding: 0.2rem 0;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+#user .chat .send img{
+    width: 100%;
+}
+#user .shout{
+    position: relative;
+    width: 20%;
+    cursor: pointer;
+}
+#user .shout img{
+    width: 80%;
+    background-color: var(--white);
+    border: solid 0.15rem var(--black);
+    border-radius: 50%;
+    padding: 0.4rem;
+    transition: all 0.2s ease;
+}
+#user .shout img:hover{
+    box-shadow: 0 0 1rem 0.1rem var(--white);
+}
+
+#user .shout .shouts{
+    position: absolute;
+    width: 15rem;
+    left: 0;
+    bottom: 4rem;
+    visibility: hidden;
+    transition: all 0.2s ease 0.2;
+}
+#user .shout:hover .shouts{
+    visibility: visible;
+}
+#user .shout .shouts .shout-msg{
+    width: 100%;
+    margin: 0.25rem 0;
+    background-color: var(--white);
+    padding: 0.5rem;
+    padding-left: 2rem;
+    font-weight: 600;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+}
+#user .shout .shouts .shout-msg:hover{
+    box-shadow: 0 0 0.5rem 0 var(--white);
+}
+#endGame{
+    display: none;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(12, 12, 12, 0.5);
+}
+#endGame .panel{
+    color: var(--black);
+    width: min(95%, 30rem);
+    padding: 2rem;
+    border-radius: 50% 10%;
+    border: solid 0.5rem var(--black);
+    background-color: gold;
+    box-shadow: 0 0 15rem 3rem goldenrod;
+}
+#endGame .panel .title{
+    margin-bottom: 2rem;
+    font-size: 3rem;
+    font-style: italic;
+}
+#endGame .score{
+    width: 100%;
+    margin: 2rem 0;
+}
+#endGame .score > * >*{
+    margin: 0.5rem 0;
+}
+#endGame .score > [team]{
+    flex-grow: 1;
+    flex-basis:  0;
+}
+
+
 .INVISIBLE{
     visibility: hidden;
 }
@@ -287,8 +423,20 @@ main .gamebox .card{
 .DISABLED .card{
     filter: grayscale(0.7);
 }
+.FADEIN{
+    animation: fadein 0.3s ease;
+}
 
-
+@keyframes fadein{
+    0%{
+        top: -2rem;
+        opacity: 0;
+    }
+    100%{
+        top: 0;
+        opacity: 1;
+    }
+}
 
 @keyframes glowTurn{
     0%{
