@@ -109,8 +109,16 @@
         transform: rotate(360deg);
     }
 }
-@media (orientation: portrait){
+@media (max-width: 1100px){
     html{
-        font-size: 0.9rem;
+        font-size: 0.6rem;
+    }
+}
+@media (max-width: 700px){
+    .chat-container{
+        order: 2;
+    }
+    #my-cards{
+        order: 3;
     }
 }

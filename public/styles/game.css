@@ -9,7 +9,7 @@ body.flex-column{
     position: absolute;
     z-index: 19;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: var(--black);
     color: var(--white);
 }
@@ -57,7 +57,7 @@ body.flex-column{
 }
 #over #ready{
     position: absolute;
-    bottom: 1rem;
+    bottom: 10vh;
     z-index: 20;
     color: var(--white);
     font-size: 1.25rem;
@@ -247,8 +247,9 @@ main .gamebox .card{
     bottom: 0;
     width: 100%;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 0 1rem;
+    flex-wrap: wrap;
 }
 #user .call{
     background-color: var(--white);
@@ -266,6 +267,7 @@ main .gamebox .card{
     padding: 0 2rem;
     bottom: 0;
     height: 1rem;
+    margin-top: 6rem;
     border-radius: 2rem 2rem 0 0;
     align-items: center;
     justify-content: center;
@@ -305,6 +307,7 @@ main .gamebox .card{
 }
 #user .chat-container{
     width: 20rem;
+    min-width: 20rem;
     margin-bottom: 1rem;
 }
 #user .chat{

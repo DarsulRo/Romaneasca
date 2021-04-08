@@ -297,6 +297,7 @@ class Game {
 
             io.to(id).emit('sendCards', this.teams[this.order[this.turnPlayer].team].players[this.order[this.turnPlayer].player].cards)
             io.to(this.room).emit('cardPlayed', card)
+            io.to(this.room).emit('willCatch', 0)
 
             //end turn sooner
             if (this.time % this.turnTime != 0) {

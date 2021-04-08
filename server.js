@@ -15,14 +15,13 @@ app.use(express.urlencoded({ extended: true }))
 const server = http.createServer(app)
 const io = socketio(server)
 
-
 app.get('/', (req, res) => {
     res.render('landing.ejs');
 })
 app.get('/game', (req, res) => {
     if (getPartyIndex(req.query.room) > -1)
         if (getParty(getPartyIndex(req.query.room)).game.playerCount > 3) {
-            return res.send('Prea multi jucatori')
+            return res.send('Camera este plina, incearca alta.')
         }
     res.render('game.ejs')
 })
