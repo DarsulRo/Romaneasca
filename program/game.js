@@ -88,6 +88,10 @@ class Game {
         clearInterval(gameInterval)
         gameInterval = setInterval(() => {
 
+            if(this.started==0){
+                clearInterval(gameInterval)
+            }
+
             if (this.isTurn()) {
                 this.endTurn(io)
             }
@@ -101,7 +105,7 @@ class Game {
             //FULL STOP
             if (this.cardsInHand < 1 && this.isTurn()) {
                 this.started = 0
-                clearInterval(this.gameInterval)
+                clearInterval(gameInterval)
                 this.endGame(io)
                 return
             }
