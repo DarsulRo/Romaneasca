@@ -5,7 +5,7 @@ class Game {
     //
     started = 0
     room = null
-    startingTime = 3
+    startingTime = 5
 
     //cards
     cardIndex = 1
@@ -79,16 +79,25 @@ class Game {
     }
     // STARING GAME
     startGame(io) {
-        console.log(`Game started in room [${this.room}]`)
+        let players = ''
+        this.teams.forEach(team => {
+            team.players.forEach(player => {
+                players += '[' + player.username + '] '
+            })
+        })
+        let string = `Game started in room [${this.room}] with ${players}`
+        console.log(string)
+
         io.to(this.room).emit('clearCards')
+        io.to(this.room).emit('updateScore', this.teams)
+
         this.started = 1
 
-        //try putting the interval in the #server.js and pass it as a parameter
         let gameInterval
         clearInterval(gameInterval)
         gameInterval = setInterval(() => {
 
-            if(this.started==0){
+            if (this.started == 0) {
                 clearInterval(gameInterval)
             }
 
@@ -151,7 +160,7 @@ class Game {
 
     //SET 
     newSet(io) {
-       // console.log('new set', this.setCount)
+        // console.log('new set', this.setCount)
         this.turnCount = 1
     }
     endSet(io) {
@@ -247,7 +256,7 @@ class Game {
             if (this.turnCount == 1 && this.setCount > 1) {
                 if (this.canCatchAgain == 1) {
                     if (this.getValue(card) == this.getValue(this.baseCard) || this.getValue(card) == 7) {
-                        
+
                     }
                     else {
                         return
@@ -316,7 +325,7 @@ class Game {
         let t = this.order[this.basePlayer].team
 
         this.tableCards.forEach(card => {
-            this.teams[t].cartiDuse +=1
+            this.teams[t].cartiDuse += 1
             if (this.getValue(card) > 9) {
                 this.teams[t].points += 1
             }
@@ -326,12 +335,12 @@ class Game {
     speedTurn() {
         this.time = this.turnTime - 1 * this.second
     }
-    endGame(io){
+    endGame(io) {
         setTimeout(() => {
             console.log(`Game over in room [${this.room}]`)
             io.emit('endGame', this.teams)
             this.stopGame(io)
-        },2000)
+        }, 2000)
     }
 
 
@@ -345,7 +354,7 @@ class Game {
             {
                 players: [],
                 points: 0,
-                cartiDuse : 0
+                cartiDuse: 0
             },
             {
                 players: [],
@@ -381,7 +390,8 @@ class Game {
         this.time = 0
         this.seconds = 0
 
-        this.teams.forEach(team=>{
+        this.tableCards = []
+        this.teams.forEach(team => {
             team.points = 0
             team.cartiDuse = 0
         })
