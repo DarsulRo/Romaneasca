@@ -140,9 +140,56 @@ nav .leave{
     color: var(--white); */
     text-decoration: none;
 }
-
-
-
+nav .media{
+    width: 25rem;
+    background-color: var(--white);
+    border-radius: 0 0 2rem 2rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem ;
+    border: solid 0.3rem gainsboro;
+    border-width: 0 0.3rem 0.3rem 0.3rem;
+    margin-right: 1rem;
+    align-items: flex-start;
+    position: relative;
+}
+#player{
+    display: none;
+}
+nav .media .song-title{
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+nav .media .song{
+    width: 100%;
+}
+nav .media .volume{
+    width: 2rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+nav .media .volume img{
+    width: 100%;
+}
+nav .media input{
+    font-size: 1rem;
+    margin: 0.25rem 0;
+    padding: 0.5rem;
+    border-width: 0;
+    border-bottom: solid 0.2rem gray;
+    width: 100%;
+    outline: none;
+    background-color: var(--white);
+}
+nav .media .submit {
+    height: 2rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+nav .media .submit img{
+    height: 100%;
+}
 main.flex-row{
     margin: 2rem 0;
     width: 100%;

@@ -236,3 +236,5 @@ socket.on('chatMessage', util=>{
 function generateMessage(msg,code){
     return `<div code="${code}"class="message FADEIN">${msg}</div>`
 }
+
+

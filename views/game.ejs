@@ -57,8 +57,20 @@
                 <div id="bar" class="bar"></div>
             </div>
         </div>
-        <a class="leave" href="/">
-        </a>
+
+        <form id="media" class="media flex-column" action="" method="dialog" autocomplete="off">
+            <div id="player"></div>
+            <div class="flex-row song">
+                <div class="flex-row volume">
+                    <img src="../public/res/images/volume.svg" alt="">
+                </div>
+                <input id="search" type="text" placeholder="Search song">
+                <button type="submit" class="submit">
+                    <img src="../public/res/images/send.svg" alt="">
+                </button>
+            </div>
+            <h3 class="song-title">Song name</h3>
+        </form>
     </nav>
     <main class="flex-row">
         <aside class="players left flex-column">
@@ -105,7 +117,7 @@
                 </div>
                 <img src="../public/res/images/shout.svg" alt="">
             </div>
-            <form id="chat-form" action="" method="dialog" class="chat flex-row">
+            <form id="chat-form" action="" method="dialog" class="chat flex-row" autocomplete="off">
                 <div id="chat-history"></div>
                 <input type="text" id="chat-input">
                 <button type="submit" class='send'><img src="../public/res/images/send.svg" alt="SEND"></button>
@@ -140,5 +152,6 @@
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="../public/scripts/gamescript.js"></script>
+<script src="../public/scripts/youtube.js"></script>
 
 </html>

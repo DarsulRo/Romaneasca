@@ -2,7 +2,8 @@ const socketio = require('socket.io')
 const http = require('http')
 const express = require('express')
 const Game = require('./program/game')
-const { randomBytes, randomInt } = require('crypto')
+const { randomInt } = require('crypto')
+const {google} = require('googleapis')
 
 //EXPRESS SETTINGS
 const app = express()
@@ -27,14 +28,24 @@ app.get('/game', (req, res) => {
 })
 
 
-
+function funUsername(username){
+    if(username.toLowerCase()=='andrada'){
+        return 'Păpădie'
+    }
+    if(username.toLowerCase()=='veli' || username.toLowerCase()=='velicea'){
+        return 'Veli Vijelie'
+    }
+    return username
+}
 let parties = []
 let allPlayers = []
 //SOCKET 
-io.on('connection', socket => {
+io.on('connection', async (socket) => {
 
     //ROOM
     socket.on('joinRoom', ({ room, username }) => {
+        
+        username = funUsername(username)
         let partyIndex = getPartyIndex(room)
         let party = null
 
@@ -54,6 +65,8 @@ io.on('connection', socket => {
             party.game.initGame()
         }
 
+        
+        
         let player = {
             username: username,
             id: socket.id,
@@ -74,6 +87,8 @@ io.on('connection', socket => {
     socket.on('joinTeam', ({ room, username, team }) => {
         let party = null
         let id = socket.id
+
+        username = funUsername(username)
 
         party = getParty(getPartyIndex(room))
         if (party) {
@@ -170,10 +185,27 @@ io.on('connection', socket => {
             parties[playerPartyIndex].game.playerCount--
             parties[playerPartyIndex].game.started = 0
             parties[playerPartyIndex].game.resetRoom(io)
+            io.to(room).emit('stopSong')
             io.to(room).emit('updateRoom', parties[playerPartyIndex].game)
             io.to(room).emit('updateTeam', parties[playerPartyIndex].game)
         }
     })
+
+
+    
+    socket.on('songRequest', async ({song, room})=>{
+        
+        let search = await google.youtube('v3').search.list({
+            key: "AIzaSyD1u6GY6BEJi6IUAd9lha6RTyRU9ORTAnk",
+            part:'snippet',
+            q:song,
+            maxResults:1
+        })
+        let id = search.data.items[0].id.videoId
+        let title = search.data.items[0].snippet.title
+        io.to(room).emit('songId', {id, title})
+    })
+
 })
 
 function getPartyIndex(room) {
@@ -205,8 +237,21 @@ function getOrderById(teams, id) {
     return undefined
 }
 
+
+
+
+
+
+
+
+
+
+
 //STARTING SERVER
 const PORT = 8000
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT} at ${new Date().toLocaleTimeString()}`)
 })
+
+
+

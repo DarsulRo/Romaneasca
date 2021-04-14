@@ -86,10 +86,12 @@ class Game {
             })
         })
         let string = `Game started in room [${this.room}] with ${players}`
+
         console.log(string)
 
         io.to(this.room).emit('clearCards')
         io.to(this.room).emit('updateScore', this.teams)
+        io.to(this.room).emit('stopSong')
 
         this.started = 1
 
@@ -341,6 +343,8 @@ class Game {
             io.emit('endGame', this.teams)
             this.stopGame(io)
         }, 2000)
+        io.to(this.room).emit('stopSong')
+
     }
 
 
