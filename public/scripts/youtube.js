@@ -22,15 +22,14 @@ function onYouTubeIframeAPIReady() {
     width: '300',
     videoId: '',
     events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
+      'onReady': onPlayerReady
     }
   });
 }
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-  //event.target.playVideo();
+  event.target.playVideo();
 }
 
 // 5. The API calls this function when the player's state changes.
@@ -44,17 +43,19 @@ function onPlayerStateChange(event) {
 //   }
 }
 function stopVideo() {
-  player.stopVideo();
+  if(player)
+    player.stopVideo();
 }
 socket.on('songId', ({id,title}) =>{
     player.loadVideoById(id)
-    player.playVideo()
+    //player.playVideo()
     player.setVolume(20)
     let songTitle = document.querySelector('.song-title')
     songTitle.innerHTML = title
 })
 socket.on('stopSong',()=>{
-  player.pauseVideo()
+  if(player)
+    player.pauseVideo()
 })
 
 let mute = document.querySelector('.volume')

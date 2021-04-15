@@ -62,6 +62,62 @@ body.flex-column{
     color: var(--white);
     font-size: 1.25rem;
 }
+#over #lobby-chat{
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    width: 20rem;
+    padding: 0.5rem;
+    background-color: var(--white);
+    display: flex;
+    border-radius: 1rem;
+}
+#lobby-chat input{ 
+    padding: 0.25rem;
+    background-color: transparent;
+    outline: none;
+    border-width: 0 0 0.2rem 0;
+    font-size: 1.15rem;
+    border-color: var(--black);
+    color: var(--black);
+    width: 17rem;
+}
+#lobby-chat .send{
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+#lobby-chat .send{
+    height: 100%;
+}
+#lobby-chat #chat-history{
+    position: absolute;
+    width: 20rem;
+    max-height: 6rem;
+    background-color: rgba(128, 128, 128, 0.2);
+    overflow-y: auto;
+    bottom: 3.5rem;
+    left: 0rem;
+    border-radius: 1rem;
+    color: var(--white);
+}
+#chat-history .message{
+    margin: 0.5rem;
+    display: flex;
+}
+#chat-history .message .user{
+    margin-right: 1rem;
+    font-weight: 800;
+    font-size: 1rem;
+}
+#chat-history .message .content{
+    font-size: 1rem;
+}
+
 
 div.background{
     background-image: radial-gradient(circle, rgb(216, 196, 81), rgb(189, 103, 5));

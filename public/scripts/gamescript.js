@@ -57,6 +57,25 @@ function updateTeams(game){
     document.getElementById('ready').innerText=`Players ready... [${game.readyCount}/4]`
 }
 
+let lobbyForm = document.getElementById('lobby-chat')
+lobbyForm.addEventListener('submit',()=>{
+    let input = document.querySelector('#lobby-chat input')
+    socket.emit('lobbyMessage',{room: params.get('room'),message:input.value})
+
+    input.value=''
+    input.focus()
+})
+socket.on('newLobbyMessage',util=>{
+    let chatHistory = document.getElementById('chat-history')
+    chatHistory.insertAdjacentHTML('beforeend',`
+    <div class="message">
+        <span class="user">${util.username}</span>
+        <p class="content">${util.message}</p>
+    </div>
+    `)
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+})
+
 socket.on('gameStarted', (game)=>{
     game.order.forEach(ord=>{
         let box = document.querySelector(`.userbox[team="${ord.team}"][player="${ord.player}"] > .name`)

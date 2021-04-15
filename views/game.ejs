@@ -21,19 +21,20 @@
         </div>
        <div id="choose_razboinici" team="0" class="flex-column razboinici side">
             <h3>Războinicii</h3>
-            <div class="flex-column members">
-
-            </div>
+            <div class="flex-column members"></div>
        </div>
        <div id="choose_faimosi" team="1" class="flex-column faimosi side">
             <h3>Faimoșii</h3>
-            <div class="flex-column members">
-                
-            </div>
+            <div class="flex-column members"></div>
        </div>
        <div id="ready">
            Players ready... [0/4]
        </div>
+       <form method="dialog" id="lobby-chat" autocomplete="off">
+            <div id="chat-history"></div>
+            <input type="text" >
+            <button type="submit" class='send'><img src="../public/res/images/send.svg" alt="SEND"></button>
+       </form>
     </div>
 
     <div class="background">
@@ -118,7 +119,6 @@
                 <img src="../public/res/images/shout.svg" alt="">
             </div>
             <form id="chat-form" action="" method="dialog" class="chat flex-row" autocomplete="off">
-                <div id="chat-history"></div>
                 <input type="text" id="chat-input">
                 <button type="submit" class='send'><img src="../public/res/images/send.svg" alt="SEND"></button>
             </form>

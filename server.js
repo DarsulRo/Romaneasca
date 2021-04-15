@@ -140,7 +140,6 @@ io.on('connection', async (socket) => {
             party.game.speedTurn()
         }
     })
-
     socket.on('sendChatMessage', (util) => {
         let party = parties[getPartyIndex(util.room)]
         let code = randomInt(999999)
@@ -152,6 +151,16 @@ io.on('connection', async (socket) => {
             player: ord.player,
             code: code
         })
+    })
+    socket.on('lobbyMessage',(util)=>{
+        let playerIndex = getPlayerIndex(allPlayers,socket.id)
+        if(playerIndex !=-1){
+            let username = allPlayers[playerIndex].username
+            io.to(util.room).emit('newLobbyMessage',{
+                username: username,
+                message: util.message
+            })
+        }
     })
 
 
